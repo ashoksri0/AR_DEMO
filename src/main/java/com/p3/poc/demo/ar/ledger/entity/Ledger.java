@@ -2,7 +2,7 @@ package com.p3.poc.demo.ar.ledger.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
-import com.p3.poc.demo.ar.ledger.TransactionMode;
+import com.p3.poc.demo.ar.ledger.enums.TransactionMode;
 import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.user.entity.Users;
 
@@ -46,27 +46,20 @@ public class Ledger {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
+
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Users getUsers() {
-        return users;
-    }
-
-    public void setUsers(final Users users) {
-        this.users = users;
     }
 
     public Double getTranscation() {
         return transcation;
     }
 
-    public void setTranscation(final Double transcation) {
+    public void setTranscation(Double transcation) {
         this.transcation = transcation;
     }
 
@@ -74,7 +67,7 @@ public class Ledger {
         return transcationDate;
     }
 
-    public void setTranscationDate(final Date transcationDate) {
+    public void setTranscationDate(Date transcationDate) {
         this.transcationDate = transcationDate;
     }
 
@@ -82,7 +75,7 @@ public class Ledger {
         return invoiceBalance;
     }
 
-    public void setInvoiceBalance(final Double invoiceBalance) {
+    public void setInvoiceBalance(Double invoiceBalance) {
         this.invoiceBalance = invoiceBalance;
     }
 
@@ -90,7 +83,7 @@ public class Ledger {
         return userBalance;
     }
 
-    public void setUserBalance(final Double userBalance) {
+    public void setUserBalance(Double userBalance) {
         this.userBalance = userBalance;
     }
 
@@ -98,7 +91,7 @@ public class Ledger {
         return transactionMode;
     }
 
-    public void setTransactionMode(final TransactionMode transactionMode) {
+    public void setTransactionMode(TransactionMode transactionMode) {
         this.transactionMode = transactionMode;
     }
 
@@ -106,15 +99,23 @@ public class Ledger {
         return payment;
     }
 
-    public void setPayment(final Payment payment) {
+    public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public Invoice getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(final Invoice invoice) {
+    public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
 }

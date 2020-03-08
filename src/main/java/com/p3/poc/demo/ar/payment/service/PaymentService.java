@@ -16,26 +16,26 @@ import java.util.Optional;
  */
 @Service
 public class PaymentService {
+
     @Autowired
     PaymentRepository paymentRepository;
 
-    public List<Payment> findAll() {
+    public List<Payment> findAllPayments() {
         return paymentRepository.findAll();
     }
 
-    public Optional<Payment> findById(Long id) {
+    public Optional<Payment> findPaymentById(Long id) {
         return paymentRepository.findById(id);
     }
 
-    public Payment save(Payment Payment) {
+    public Payment savePayment(Payment Payment) {
         return paymentRepository.save(Payment);
     }
 
-    public void deleteById(Long id) {
+    public void deletePaymentById(Long id) {
         paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new);
     }
-
-    public Payment updateById(Long id, Payment payment) {
+    public Payment updatePaymentById(Long id, Payment payment) {
         Payment optionalPayment = paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new);
         optionalPayment.setAmount(payment.getAmount());
         optionalPayment.setPaymentReceivedDate(payment.getPaymentReceivedDate());

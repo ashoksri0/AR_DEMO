@@ -18,27 +18,27 @@ public class PaymentController {
     PaymentService paymentService;
 
     @GetMapping("/")
-    public Iterable<Payment> getUsers() {
-        return paymentService.findAll();
+    public Iterable<Payment> getPayment() {
+        return paymentService.findAllPayments();
     }
 
     @GetMapping("/{id}")
-    public Payment getStudent(@PathVariable Long id) {
-        return paymentService.findById(id).orElseThrow(PaymentNotFoundException::new);
+    public Payment getPayment(@PathVariable Long id) {
+        return paymentService.findPaymentById(id).orElseThrow(PaymentNotFoundException::new);
     }
 
     @PostMapping("/")
-    public Payment addStudent(@RequestBody Payment payment) {
-        return paymentService.save(payment);
+    public Payment addPayment(@RequestBody Payment payment) {
+        return paymentService.savePayment(payment);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        paymentService.deleteById(id);
+    public void deletePayment(@PathVariable Long id) {
+        paymentService.deletePaymentById(id);
     }
 
     @PutMapping("/{id}")
-    public Payment updateStudent(@PathVariable Long id, @RequestBody Payment payment) {
-        return paymentService.updateById(id, payment);
+    public Payment updatePayment(@PathVariable Long id, @RequestBody Payment payment) {
+        return paymentService.updatePaymentById(id, payment);
     }
 }
