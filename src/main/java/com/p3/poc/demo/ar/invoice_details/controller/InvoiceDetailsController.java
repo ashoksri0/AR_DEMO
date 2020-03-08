@@ -61,9 +61,6 @@ public class InvoiceDetailsController {
         return invoiceDetailsList;
     }
 
-
-
-
     @GetMapping("/order/{invoiceId}")
     public List<OrderModel> getOrderByInvoice(@PathVariable Long invoiceId) {
         return ordersRepository.findAllByInvoice_Id(invoiceId).stream().map(getOrdersOrderModelFunction()).collect(Collectors.toList());
