@@ -4,6 +4,7 @@ import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,14 +32,13 @@ public class Users {
     @Temporal(TemporalType.DATE)
     private Date doj;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",fetch = FetchType.LAZY)
     private Set<Invoice> invoices;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",fetch = FetchType.LAZY)
     private Set<Ledger> ledgers;
 
-    public Users(Long id) {
-        this.id = id;
+    public Users() {
     }
 
     public Users(String firstName, String lastName, String email, Date dob, Date doj) {
@@ -95,5 +95,21 @@ public class Users {
 
     public void setDoj(Date doj) {
         this.doj = doj;
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(final Set<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    public Set<Ledger> getLedgers() {
+        return ledgers;
+    }
+
+    public void setLedgers(final Set<Ledger> ledgers) {
+        this.ledgers = ledgers;
     }
 }

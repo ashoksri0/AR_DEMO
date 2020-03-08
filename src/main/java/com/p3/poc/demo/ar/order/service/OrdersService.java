@@ -41,8 +41,8 @@ public class OrdersService {
         orderToUpdate.setOrderDate(order.getOrderDate());
         orderToUpdate.setOrderPrice(order.getOrderPrice());
         orderToUpdate.setOrderStatus(order.getOrderStatus());
-        orderToUpdate.setOrderTotal(order.getOrderTotal());
-        orderToUpdate.setShipAddress(order.getShipAddress());
+        orderToUpdate.setOrderQuantity(order.getOrderQuantity());
+        orderToUpdate.setOrderName(order.getOrderName());
         ordersRepository.save(orderToUpdate);
         return orderToUpdate;
     }

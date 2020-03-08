@@ -2,9 +2,7 @@ package com.p3.poc.demo.ar.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
-import com.p3.poc.demo.ar.payment.entity.Payment;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -26,8 +22,8 @@ public class Orders {
     private Long id;
     @Temporal(TemporalType.DATE)
     private Date orderDate;
-    private String shipAddress;
-    private Double orderTotal;
+    private String orderName;
+    private Double orderQuantity;
     private String orderStatus;
     private Double orderPrice;
 
@@ -53,20 +49,20 @@ public class Orders {
         this.orderDate = orderDate;
     }
 
-    public String getShipAddress() {
-        return shipAddress;
+    public String getOrderName() {
+        return orderName;
     }
 
-    public void setShipAddress(String shipAddress) {
-        this.shipAddress = shipAddress;
+    public void setOrderName(String shipAddress) {
+        this.orderName = shipAddress;
     }
 
-    public Double getOrderTotal() {
-        return orderTotal;
+    public Double getOrderQuantity() {
+        return orderQuantity;
     }
 
-    public void setOrderTotal(Double orderTotal) {
-        this.orderTotal = orderTotal;
+    public void setOrderQuantity(Double orderTotal) {
+        this.orderQuantity = orderTotal;
     }
 
     public String getOrderStatus() {
