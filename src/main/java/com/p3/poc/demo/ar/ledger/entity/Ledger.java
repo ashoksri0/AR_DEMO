@@ -30,6 +30,8 @@ public class Ledger {
     private Date transcationDate;
     private Double invoiceBalance;
     private Double userBalance;
+    private Double userOpeningBalance;
+    private Double invoiceOpeningBalance;
     private TransactionMode transactionMode;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -117,5 +119,21 @@ public class Ledger {
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    public Double getUserOpeningBalance() {
+        return userOpeningBalance;
+    }
+
+    public void setUserOpeningBalance(final Double userOpeningBalance) {
+        this.userOpeningBalance = userOpeningBalance;
+    }
+
+    public Double getInvoiceOpeningBalance() {
+        return invoiceOpeningBalance;
+    }
+
+    public void setInvoiceOpeningBalance(final Double invoiceOpeningBalance) {
+        this.invoiceOpeningBalance = invoiceOpeningBalance;
     }
 }
