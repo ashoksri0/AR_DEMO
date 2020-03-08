@@ -1,6 +1,7 @@
 package com.p3.poc.demo.ar.payment.entity;
 
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
 
 import javax.persistence.Entity;
@@ -24,6 +25,8 @@ public class Payment {
     private Date paymentReceivedDate;
     @OneToOne(mappedBy = "payment")
     private Invoice invoice;
+    @OneToOne(mappedBy = "payment")
+    private Ledger ledger;
     @Temporal(TemporalType.DATE)
     private Date paymentCreatedDate;
 

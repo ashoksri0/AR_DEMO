@@ -3,6 +3,7 @@ package com.p3.poc.demo.ar.ledger.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.ledger.TransactionMode;
+import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.user.entity.Users;
 
 import javax.persistence.CascadeType;
@@ -13,11 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 public class Ledger {
@@ -28,21 +28,23 @@ public class Ledger {
     private Double transcation;
     @Temporal(TemporalType.DATE)
     private Date transcationDate;
-
     private Double invoiceBalance;
-
     private Double userBalance;
-
-    private Date transactionDate;
-
     private TransactionMode transactionMode;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private Payment payment;
+
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @OneToMany(mappedBy = "ledger")
-    private Set<Invoice> invoices;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
 
     public Long getId() {
         return id;
@@ -58,5 +60,61 @@ public class Ledger {
 
     public void setUsers(final Users users) {
         this.users = users;
+    }
+
+    public Double getTranscation() {
+        return transcation;
+    }
+
+    public void setTranscation(final Double transcation) {
+        this.transcation = transcation;
+    }
+
+    public Date getTranscationDate() {
+        return transcationDate;
+    }
+
+    public void setTranscationDate(final Date transcationDate) {
+        this.transcationDate = transcationDate;
+    }
+
+    public Double getInvoiceBalance() {
+        return invoiceBalance;
+    }
+
+    public void setInvoiceBalance(final Double invoiceBalance) {
+        this.invoiceBalance = invoiceBalance;
+    }
+
+    public Double getUserBalance() {
+        return userBalance;
+    }
+
+    public void setUserBalance(final Double userBalance) {
+        this.userBalance = userBalance;
+    }
+
+    public TransactionMode getTransactionMode() {
+        return transactionMode;
+    }
+
+    public void setTransactionMode(final TransactionMode transactionMode) {
+        this.transactionMode = transactionMode;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(final Payment payment) {
+        this.payment = payment;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(final Invoice invoice) {
+        this.invoice = invoice;
     }
 }

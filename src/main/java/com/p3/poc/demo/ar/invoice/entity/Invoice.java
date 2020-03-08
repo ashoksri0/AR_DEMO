@@ -33,10 +33,9 @@ public class Invoice {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
-    @JoinColumn(name = "ledger_id")
-    private Ledger ledger;
+    @OneToMany(mappedBy = "invoice")
+    private Set<Ledger> ledgers;
+
 
     private Double invoice_Total;
     @OneToMany(mappedBy = "invoice")
