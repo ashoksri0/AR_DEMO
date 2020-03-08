@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.invoice.controller;
 
-import com.p3.poc.demo.ar.customexceptions.UserNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.UserNotFoundException;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;

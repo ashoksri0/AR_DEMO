@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.invoice.service;
 
-import com.p3.poc.demo.ar.customexceptions.InvoiceNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.InvoiceNotFoundException;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.invoice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.ledger.service;
 
-import com.p3.poc.demo.ar.customexceptions.LedgerNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.LedgerNotFoundException;
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import com.p3.poc.demo.ar.ledger.repository.LedgerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

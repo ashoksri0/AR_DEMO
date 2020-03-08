@@ -1,7 +1,7 @@
 package com.p3.poc.demo.ar.user.controller;
 
 import com.p3.poc.demo.ar.MapperUtils;
-import com.p3.poc.demo.ar.customexceptions.UserNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.UserNotFoundException;
 import com.p3.poc.demo.ar.user.entity.Users;
 import com.p3.poc.demo.ar.user.model.UsersModel;
 import com.p3.poc.demo.ar.user.repository.UserRepository;

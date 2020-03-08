@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.payment.controller;
 
-import com.p3.poc.demo.ar.customexceptions.PaymentNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.PaymentNotFoundException;
 import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;

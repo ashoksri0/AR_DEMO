@@ -1,4 +1,4 @@
-package com.p3.poc.demo.ar.customexceptions;
+package com.p3.poc.demo.ar.utils.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

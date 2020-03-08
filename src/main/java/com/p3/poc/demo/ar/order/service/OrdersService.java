@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.order.service;
 
-import com.p3.poc.demo.ar.customexceptions.OrderNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.OrderNotFoundException;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.invoice_details.model.InvoiceDetails;
 import com.p3.poc.demo.ar.order.entity.Orders;

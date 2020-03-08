@@ -1,6 +1,6 @@
 package com.p3.poc.demo.ar.order.controller;
 
-import com.p3.poc.demo.ar.customexceptions.OrderNotFoundException;
+import com.p3.poc.demo.ar.utils.exceptions.OrderNotFoundException;
 import com.p3.poc.demo.ar.order.entity.Orders;
 import com.p3.poc.demo.ar.order.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
