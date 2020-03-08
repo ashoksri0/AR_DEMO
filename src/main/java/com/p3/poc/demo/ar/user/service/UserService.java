@@ -1,8 +1,8 @@
-package com.p3.poc.demo.ar.service;
+package com.p3.poc.demo.ar.user.service;
 
 
-import com.p3.poc.demo.ar.model.User;
-import com.p3.poc.demo.ar.repo.UserRepository;
+import com.p3.poc.demo.ar.user.entity.User;
+import com.p3.poc.demo.ar.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

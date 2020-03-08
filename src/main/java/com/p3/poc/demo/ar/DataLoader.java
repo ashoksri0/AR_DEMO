@@ -2,7 +2,7 @@ package com.p3.poc.demo.ar;
 
 
 import com.p3.poc.demo.ar.model.User;
-import com.p3.poc.demo.ar.repo.UserRepository;
+import com.p3.poc.demo.ar.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
