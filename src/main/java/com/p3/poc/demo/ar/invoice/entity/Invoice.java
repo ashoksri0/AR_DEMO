@@ -33,17 +33,15 @@ public class Invoice {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
-    @JoinColumn(name = "ledger_id")
-    private Ledger ledger;
+    @OneToMany(mappedBy = "invoice")
+    private Set<Ledger> ledgers;
+
 
     private Double invoice_Total;
     @OneToMany(mappedBy = "invoice")
     private Set<Orders> orders;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    private Payment payment;
+    @OneToMany(mappedBy = "invoice",cascade = CascadeType.ALL)
+    private Set<Payment> payment;
 
     public Long getId() {
         return id;
@@ -77,11 +75,27 @@ public class Invoice {
         this.orders = orders;
     }
 
-    public Payment getPayment() {
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(final Users users) {
+        this.users = users;
+    }
+
+    public Set<Ledger> getLedgers() {
+        return ledgers;
+    }
+
+    public void setLedgers(final Set<Ledger> ledgers) {
+        this.ledgers = ledgers;
+    }
+
+    public Set<Payment> getPayment() {
         return payment;
     }
 
-    public void setPayment(final Payment payment) {
+    public void setPayment(final Set<Payment> payment) {
         this.payment = payment;
     }
 }
