@@ -38,9 +38,8 @@ public class PaymentService {
     public Payment updateById(Long id, Payment payment) {
         Payment optionalPayment = paymentRepository.findById(id).orElseThrow(PaymentNotFoundException::new);
         optionalPayment.setUserId(payment.getUserId());
-        optionalPayment.setPaymentAmount(payment.getPaymentAmount());
-        optionalPayment.setReceivedDate(payment.getReceivedDate());
-        optionalPayment.setInvoice_id(payment.getInvoice_id());
+        optionalPayment.setAmount(payment.getAmount());
+        optionalPayment.setPaymentReceivedDate(payment.getPaymentReceivedDate());
         optionalPayment.setPaymentMode(payment.getPaymentMode());
         return optionalPayment;
     }

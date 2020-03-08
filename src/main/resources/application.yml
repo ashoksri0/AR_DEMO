@@ -23,7 +23,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     url: jdbc:postgresql://localhost:5432/ar?createDatabaseIfNotExist=true
-    #username: postgresuser
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
@@ -47,14 +46,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/patient360?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/ar_demo
     #username: postgresuser
-    username: postgres
-    password: postgres
-    driverClassName: org.postgresql.Driver
-    autoCommit: false
+    username: root
+    password: imaninshu1@
     hikari:
       connection-timeout: 20000
       maximumPoolSize: 10

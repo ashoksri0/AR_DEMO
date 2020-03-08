@@ -2,7 +2,6 @@ package com.p3.poc.demo.ar.payment.entity;
 
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class Payment {
     private PaymentMode paymentMode;
     private Double amount;
     @Temporal(TemporalType.DATE)
-    private Date paymentDate;
+    private Date paymentReceivedDate;
     @OneToOne(mappedBy = "payment")
     private Invoice invoice;
     @Temporal(TemporalType.DATE)
@@ -75,12 +74,12 @@ public class Payment {
         this.paymentCreatedDate = paymentCreatedDate;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getPaymentReceivedDate() {
+        return paymentReceivedDate;
     }
 
-    public void setPaymentDate(final Date dateOfJoining) {
-        this.paymentDate = dateOfJoining;
+    public void setPaymentReceivedDate(final Date dateOfJoining) {
+        this.paymentReceivedDate = dateOfJoining;
     }
 
     public Invoice getInvoice() {
