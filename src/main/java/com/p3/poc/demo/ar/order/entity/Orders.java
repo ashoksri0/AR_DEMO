@@ -29,7 +29,7 @@ public class Orders {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
 

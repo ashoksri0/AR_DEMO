@@ -1,8 +1,11 @@
 package com.p3.poc.demo.ar.order.service;
 
 import com.p3.poc.demo.ar.customexceptions.OrderNotFoundException;
+import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.invoice_details.model.InvoiceDetails;
 import com.p3.poc.demo.ar.order.entity.Orders;
 import com.p3.poc.demo.ar.order.repository.OrdersRepository;
+import com.p3.poc.demo.ar.payment.entity.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +49,18 @@ public class OrdersService {
         ordersRepository.save(orderToUpdate);
         return orderToUpdate;
     }
+
+    public void setAmountDetails(InvoiceDetails invoiceDetails, Invoice invoice) {
+        Double amountTotal = invoice.getOrders()
+                .stream()
+                .map(Orders::getOrderPrice)
+                .reduce(0D, Double::sum);
+
+        Double amountPaid = invoice.getPayment().stream().map(Payment::getAmount).reduce(0D, Double::sum);
+        invoiceDetails.setAmountPaid(amountPaid);
+        invoiceDetails.setAmountDue(amountTotal - amountPaid);
+        invoiceDetails.setTotalCost(amountTotal);
+        System.out.println(invoiceDetails);
+    }
+
 }
