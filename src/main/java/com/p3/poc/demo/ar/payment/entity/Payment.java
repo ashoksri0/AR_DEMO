@@ -1,13 +1,19 @@
 package com.p3.poc.demo.ar.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
+import com.p3.poc.demo.ar.user.entity.Users;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,12 +24,13 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userId;
     private PaymentMode paymentMode;
     private Double amount;
     @Temporal(TemporalType.DATE)
     private Date paymentReceivedDate;
-    @OneToOne(mappedBy = "payment")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
     private Invoice invoice;
     @OneToOne(mappedBy = "payment")
     private Ledger ledger;
@@ -43,13 +50,12 @@ public class Payment {
     }
 
 
-
-    public Long getUserId() {
-        return userId;
+    public Ledger getLedger() {
+        return ledger;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setLedger(final Ledger ledger) {
+        this.ledger = ledger;
     }
 
     public PaymentMode getPaymentMode() {
