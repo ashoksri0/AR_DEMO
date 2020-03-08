@@ -59,35 +59,10 @@ public class LedgerController {
             @RequestParam(required = false, defaultValue = "1970-01-01") Date startDate,
             @RequestParam(required = false, defaultValue = "2050-01-01") Date endDate
     ) {
-        List<Ledger> ledgerList;
-        if (invoiceID == null) {
-            ledgerList =
-                    ledgerRepository.findAllByUsers_IdAndTranscationDateBetweenOrderByTranscationDateDesc(userID, startDate, endDate);
-        } else {
-            ledgerList = ledgerRepository.findAllByUsers_IdAndInvoice_IdAndTranscationDateBetweenOrderByTranscationDateDesc(userID, invoiceID,
-                    startDate, endDate);
-        }
-        ARSummary arSummary = ARSummary.builder().openingBalance(0D).totalDue(0D).totalReceivable(0D).totalReceived(0D).build();
-        ledgerList.forEach(ledger -> {
-            TransactionMode transactionMode = ledger.getTransactionMode();
-            switch (transactionMode) {
-                case AMOUNT_RECEIVED:
-                    arSummary.setTotalReceived(ledger.getTranscation() + arSummary.getTotalReceived());
-                    break;
-                case AMOUNT_RECEIVABLE:
-                    arSummary.setTotalReceivable(ledger.getTranscation() + arSummary.getTotalReceivable());
-                    break;
-            }
-        });
-
-        if (ledgerList.size() > 0) {
-            Double openingBalance = invoiceID == null ? ledgerList.get(ledgerList.size() - 1).getUserOpeningBalance() :
-                    ledgerList.get(ledgerList.size() - 1).getInvoiceOpeningBalance();
-            arSummary.setOpeningBalance(openingBalance);
-            arSummary.setTotalReceivable(arSummary.getTotalReceivable() + openingBalance);
-        }
-        arSummary.setTotalDue(arSummary.getTotalReceivable() - arSummary.getTotalReceived());
+        ARSummary arSummary = ledgerService.getArSummary(userID, invoiceID, startDate, endDate);
         return arSummary;
     }
+
+
 
 }

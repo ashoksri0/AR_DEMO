@@ -50,17 +50,6 @@ public class OrdersService {
         return orderToUpdate;
     }
 
-    public void setAmountDetails(InvoiceDetails invoiceDetails, Invoice invoice) {
-        Double amountTotal = invoice.getOrders()
-                .stream()
-                .map(Orders::getOrderPrice)
-                .reduce(0D, Double::sum);
 
-        Double amountPaid = invoice.getPayment().stream().map(Payment::getAmount).reduce(0D, Double::sum);
-        invoiceDetails.setAmountPaid(amountPaid);
-        invoiceDetails.setAmountDue(amountTotal - amountPaid);
-        invoiceDetails.setTotalCost(amountTotal);
-        System.out.println(invoiceDetails);
-    }
 
 }

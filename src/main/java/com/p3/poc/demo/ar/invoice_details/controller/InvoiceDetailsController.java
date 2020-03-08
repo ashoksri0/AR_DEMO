@@ -2,6 +2,7 @@ package com.p3.poc.demo.ar.invoice_details.controller;
 
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.invoice.repository.InvoiceRepository;
+import com.p3.poc.demo.ar.invoice.service.InvoiceService;
 import com.p3.poc.demo.ar.invoice_details.model.ARSummary;
 import com.p3.poc.demo.ar.invoice_details.model.InvoiceDetails;
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
@@ -36,6 +37,8 @@ public class InvoiceDetailsController {
     OrdersService ordersService;
     @Autowired
     LedgerRepository ledgerRepository;
+    @Autowired
+    InvoiceService invoiceService;
     @GetMapping
     public List<InvoiceDetails> getUserInvoice(@RequestParam Long userID,
                                                @RequestParam(required = false, defaultValue = "1970-01-01") Date startDate,
@@ -44,22 +47,11 @@ public class InvoiceDetailsController {
                                                @RequestParam(defaultValue = "0") Integer pageNo,
                                                @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        List<Invoice> invoiceList;
-        if (sort) {
-            invoiceList = invoiceRepository.findAllByUsers_IdAndInvoiceDateBetweenOrderByInvoiceDate(userID, startDate, endDate, paging);
-
-        } else {
-            invoiceList = invoiceRepository.findAllByUsers_IdAndInvoiceDateBetweenOrderByInvoiceDateDesc(userID, startDate, endDate, paging);
-        }
-
-        List<InvoiceDetails> invoiceDetailsList = invoiceList.stream().map(invoice -> {
-            InvoiceDetails invoiceDetails = InvoiceDetails.builder().invoiceID(invoice.getId())
-                    .purchaseDate(invoice.getInvoiceDate()).build();
-            ordersService.setAmountDetails(invoiceDetails, invoice);
-            return invoiceDetails;
-        }).collect(Collectors.toList());
+        List<InvoiceDetails> invoiceDetailsList = invoiceService.getInvoiceDetails(userID, startDate, endDate, sort, paging);
         return invoiceDetailsList;
     }
+
+
 
     @GetMapping("/order/{invoiceId}")
     public List<OrderModel> getOrderByInvoice(@PathVariable Long invoiceId) {
