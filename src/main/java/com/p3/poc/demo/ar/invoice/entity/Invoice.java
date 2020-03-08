@@ -1,7 +1,8 @@
 package com.p3.poc.demo.ar.invoice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.p3.poc.demo.ar.order.entity.Order;
+import com.p3.poc.demo.ar.ledger.entity.Ledger;
+import com.p3.poc.demo.ar.order.entity.Orders;
 import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.user.entity.Users;
 
@@ -31,9 +32,15 @@ public class Invoice {
     @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users users;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
+    @JoinColumn(name = "ledger_id")
+    private Ledger ledger;
+
     private Double invoice_Total;
     @OneToMany(mappedBy = "invoice")
-    private Set<Order> orders;
+    private Set<Orders> orders;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
@@ -62,11 +69,11 @@ public class Invoice {
         this.invoice_Total = invoice_Total;
     }
 
-    public Set<Order> getOrders() {
+    public Set<Orders> getOrders() {
         return orders;
     }
 
-    public void setOrders(final Set<Order> orders) {
+    public void setOrders(final Set<Orders> orders) {
         this.orders = orders;
     }
 

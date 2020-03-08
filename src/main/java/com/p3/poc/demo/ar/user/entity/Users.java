@@ -1,6 +1,7 @@
 package com.p3.poc.demo.ar.user.entity;
 
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.ledger.entity.Ledger;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,9 @@ public class Users {
 
     @OneToMany(mappedBy = "users")
     private Set<Invoice> invoices;
+
+    @OneToMany(mappedBy = "users")
+    private Set<Ledger> ledgers;
 
     public Users(Long id) {
         this.id = id;

@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
