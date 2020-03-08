@@ -1,42 +1,46 @@
 package com.p3.poc.demo.ar.payment.entity;
 
+import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long payment_id;
+    private Long id;
     private Long userId;
-    private Long invoice_id;
     private PaymentMode paymentMode;
-    private Date date_received;
-    private Double amount_received;
+    private Double amount;
+    @Temporal(TemporalType.DATE)
+    private Date paymentDate;
+    @OneToOne(mappedBy = "payment")
+    private Invoice invoice;
+    @Temporal(TemporalType.DATE)
+    private Date paymentCreatedDate;
+
 
     public Payment() {
     }
 
-    public Long getPayment_id() {
-        return payment_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setPayment_id(Long payment_id) {
-        this.payment_id = payment_id;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
-    public Long getInvoice_id() {
-        return invoice_id;
-    }
 
-    public void setInvoice_id(Long invoice_id) {
-        this.invoice_id = invoice_id;
-    }
 
     public Long getUserId() {
         return userId;
@@ -54,19 +58,36 @@ public class Payment {
         this.paymentMode = paymentMode;
     }
 
-    public Date getDate_received() {
-        return date_received;
+
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setDate_received(Date date_received) {
-        this.date_received = date_received;
+    public void setAmount(final Double amount) {
+        this.amount = amount;
     }
 
-    public Double getAmount_received() {
-        return amount_received;
+    public Date getPaymentCreatedDate() {
+        return paymentCreatedDate;
     }
 
-    public void setAmount_received(Double amount_received) {
-        this.amount_received = amount_received;
+    public void setPaymentCreatedDate(final Date paymentCreatedDate) {
+        this.paymentCreatedDate = paymentCreatedDate;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(final Date dateOfJoining) {
+        this.paymentDate = dateOfJoining;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(final Invoice invoice) {
+        this.invoice = invoice;
     }
 }
