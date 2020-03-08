@@ -1,3 +1,4 @@
+/*
 package com.p3.poc.demo.ar;
 
 
@@ -24,3 +25,4 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 }
 
+*/

@@ -9,7 +9,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
@@ -26,11 +26,11 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date doj;
 
-    public User(Long userId) {
+    public Users(Long userId) {
         this.userId = userId;
     }
 
-    public User(String firstName, String lastName, String email, Date dob, Date doj) {
+    public Users(String firstName, String lastName, String email, Date dob, Date doj) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
