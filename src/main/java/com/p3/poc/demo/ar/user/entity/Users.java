@@ -1,18 +1,23 @@
 package com.p3.poc.demo.ar.user.entity;
 
+import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.ledger.entity.Ledger;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long id;
 
     private String firstName;
 
@@ -26,11 +31,17 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date doj;
 
-    public User(Long userId) {
-        this.userId = userId;
+    @OneToMany(mappedBy = "users")
+    private Set<Invoice> invoices;
+
+    @OneToMany(mappedBy = "users")
+    private Set<Ledger> ledgers;
+
+    public Users(Long id) {
+        this.id = id;
     }
 
-    public User(String firstName, String lastName, String email, Date dob, Date doj) {
+    public Users(String firstName, String lastName, String email, Date dob, Date doj) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -38,12 +49,12 @@ public class User {
         this.doj = doj;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long userId) {
+        this.id = userId;
     }
 
     public String getFirstName() {

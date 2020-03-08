@@ -1,7 +1,7 @@
 package com.p3.poc.demo.ar.user.controller;
 
 import com.p3.poc.demo.ar.customexceptions.UserNotFoundException;
-import com.p3.poc.demo.ar.user.entity.User;
+import com.p3.poc.demo.ar.user.entity.Users;
 import com.p3.poc.demo.ar.user.repository.UserRepository;
 import com.p3.poc.demo.ar.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +17,24 @@ public class UserController {
     UserRepository repository;
 
     @GetMapping("/")
-    public Iterable<User> getUsers() {
+    public Iterable<Users> getUsers() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getStudent(@PathVariable Long id) {
+    public Users getStudent(@PathVariable Long id) {
         return userService.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @PostMapping("/")
-    public User addStudent(@RequestBody User user) {
+    public Users addStudent(@RequestBody Users user) {
         return userService.save(user);
     }
 
     @PutMapping("/{id}")
-    public User updateStudent(@PathVariable Long id, @RequestBody User user) {
+    public Users updateStudent(@PathVariable Long id, @RequestBody Users user) {
 
-        User userToUpdate = repository.findById(id).orElseThrow(UserNotFoundException::new);
+        Users userToUpdate = repository.findById(id).orElseThrow(UserNotFoundException::new);
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
         userToUpdate.setDob(user.getDob());

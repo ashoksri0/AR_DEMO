@@ -1,88 +1,62 @@
 package com.p3.poc.demo.ar.ledger.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.ledger.TransactionMode;
+import com.p3.poc.demo.ar.user.entity.Users;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Ledger {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long id;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
+    private Double transcation;
     @Temporal(TemporalType.DATE)
-    private Date dob;
+    private Date transcationDate;
 
-    @Temporal(TemporalType.DATE)
-    private Date doj;
+    private Double invoiceBalance;
 
-    public Ledger(Long userId) {
-        this.userId = userId;
+    private Double userBalance;
+
+    private Date transactionDate;
+
+    private TransactionMode transactionMode;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private Users users;
+
+    @OneToMany(mappedBy = "ledger")
+    private Set<Invoice> invoices;
+
+    public Long getId() {
+        return id;
     }
 
-    public Ledger(String firstName, String lastName, String email, Date dob, Date doj) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.dob = dob;
-        this.doj = doj;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public Date getDoj() {
-        return doj;
-    }
-
-    public void setDoj(Date doj) {
-        this.doj = doj;
+    public void setUsers(final Users users) {
+        this.users = users;
     }
 }
