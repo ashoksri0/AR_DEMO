@@ -1,41 +1,41 @@
 package com.p3.poc.demo.ar.payment.entity;
 
+import com.p3.poc.demo.ar.payment.enums.PaymentMode;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long payment_id;
     private Long userId;
+    private Long invoice_id;
+    private PaymentMode paymentMode;
+    private Date date_received;
+    private Double amount_received;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    @Temporal(TemporalType.DATE)
-    private Date dob;
-
-    @Temporal(TemporalType.DATE)
-    private Date doj;
-
-    public Payment(Long userId) {
-        this.userId = userId;
+    public Payment() {
     }
 
-    public Payment(String firstName, String lastName, String email, Date dob, Date doj) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.dob = dob;
-        this.doj = doj;
+    public Long getPayment_id() {
+        return payment_id;
+    }
+
+    public void setPayment_id(Long payment_id) {
+        this.payment_id = payment_id;
+    }
+
+    public Long getInvoice_id() {
+        return invoice_id;
+    }
+
+    public void setInvoice_id(Long invoice_id) {
+        this.invoice_id = invoice_id;
     }
 
     public Long getUserId() {
@@ -46,43 +46,27 @@ public class Payment {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public PaymentMode getPaymentMode() {
+        return paymentMode;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPaymentMode(PaymentMode paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Date getDate_received() {
+        return date_received;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDate_received(Date date_received) {
+        this.date_received = date_received;
     }
 
-    public String getEmail() {
-        return email;
+    public Double getAmount_received() {
+        return amount_received;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public Date getDoj() {
-        return doj;
-    }
-
-    public void setDoj(Date doj) {
-        this.doj = doj;
+    public void setAmount_received(Double amount_received) {
+        this.amount_received = amount_received;
     }
 }
