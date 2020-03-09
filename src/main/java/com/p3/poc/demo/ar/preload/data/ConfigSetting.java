@@ -17,6 +17,4 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigSetting {
 private Integer userCount;
-private Integer invoiceCount;
-private Integer orderCount;
 }

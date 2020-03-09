@@ -7,6 +7,7 @@ import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.user.entity.Users;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,13 +25,17 @@ public class Ledger {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @Column(precision=10, scale=2)
     private Double transcation;
     @Temporal(TemporalType.TIMESTAMP)
     private Date transcationDate;
+    @Column(precision=10, scale=2)
     private Double invoiceBalance;
+    @Column(precision=10, scale=2)
     private Double userBalance;
+    @Column(precision=10, scale=2)
     private Double userOpeningBalance;
+    @Column(precision=10, scale=2)
     private Double invoiceOpeningBalance;
     private TransactionMode transactionMode;
 

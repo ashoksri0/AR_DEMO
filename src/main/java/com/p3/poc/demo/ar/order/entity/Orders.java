@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,8 +24,10 @@ public class Orders {
     @Temporal(TemporalType.DATE)
     private Date orderDate;
     private String orderName;
+    @Column(precision=10, scale=2)
     private Double orderQuantity;
     private String orderStatus;
+    @Column(precision=10, scale=2)
     private Double orderPrice;
 
     @JsonIgnore

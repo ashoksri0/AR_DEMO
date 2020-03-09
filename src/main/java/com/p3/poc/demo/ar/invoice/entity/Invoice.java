@@ -18,6 +18,7 @@ public class Invoice {
     private Long id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date invoiceDate;
+    @Column(precision=10, scale=2)
     private Double invoiceTotal;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

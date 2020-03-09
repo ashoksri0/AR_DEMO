@@ -17,5 +17,5 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long> {
     List<Ledger> findAllByUsers_IdAndTranscationDateBetweenOrderByTranscationDateDesc(Long userId, Date startDate, Date endDate);
     List<Ledger> findAllByUsers_IdAndInvoice_IdAndTranscationDateBetweenOrderByTranscationDateDesc(Long userId,Long invoiceId, Date startDate,
                                                                                                    Date endDate);
-
+    List<Ledger> findAllByUsers_IdAndOrderByTranscationDateDesc(Long userID);
 }

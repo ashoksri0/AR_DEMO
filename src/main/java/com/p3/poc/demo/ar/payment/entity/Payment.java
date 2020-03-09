@@ -6,6 +6,7 @@ import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private PaymentMode paymentMode;
+    @Column(precision=10, scale=2)
     private Double amount;
     @Temporal(TemporalType.TIMESTAMP)
     private Date paymentReceivedDate;
