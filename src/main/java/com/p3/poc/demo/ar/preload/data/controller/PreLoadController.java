@@ -1,21 +1,14 @@
 package com.p3.poc.demo.ar.preload.data.controller;
 
+import com.p3.poc.demo.ar.DateUtils;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
-import com.p3.poc.demo.ar.ledger.entity.Ledger;
-import com.p3.poc.demo.ar.ledger.enums.TransactionMode;
-import com.p3.poc.demo.ar.order.entity.Orders;
-import com.p3.poc.demo.ar.payment.entity.Payment;
-import com.p3.poc.demo.ar.payment.enums.PaymentMode;
 import com.p3.poc.demo.ar.user.entity.Users;
-import com.p3.poc.demo.ar.user.model.UsersModel;
 import com.p3.poc.demo.ar.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 /**
@@ -23,31 +16,33 @@ import java.util.Date;
  * on 09/03/20.
  */
 
-@RestController("/preload-data")
+@RestController
+@RequestMapping("/preload-data")
 public class PreLoadController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    DateUtils dateUtils;
 
-    /*@GetMapping
-    public String loadData()
-    {
-
-        return "success";
-    }*/
-
-    @PostMapping(path = "/save/all/users/",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/generate")
     public String saveUsers(){
-
-
         Users users = new Users();
         users.setFirstName("Selva");
         users.setDob(new Date());
         users.setDoj(new Date());
         users.setEmail("test@gmail.com");
         users.setLastName("test");
+        users= userRepository.save(users);
+
+        Invoice invoice = new Invoice();
+        invoice.setUsers(users);
+        System.out.println(" date "+dateUtils.getRandomDate(new Date("2020-01-01"),new Date("2020-04-01")));
+        invoice.setInvoiceDate(dateUtils.getRandomDate(new Date("2020-01-01"),new Date("2020-04-01")));
+        invoice.setInvoiceTotal(dateUtils.getRandomINrange(100000,3000000));
 
 
+/*
      // Ledger Create Code
 
         Ledger ledger =new Ledger();
@@ -74,23 +69,6 @@ public class PreLoadController {
         payment.setPaymentCreatedDate();
 
 
-        // Invoice Create Code
-
-        Invoice invoice = new Invoice();
-        invoice.setUsers(users);
-        invoice.setInvoiceDate(new Date());
-        invoice.setInvoiceTotal(12000d);
-
-       // ledger.setPayment(12000d);
-
-        // Order Create code
-
-
-
-        invoice.setLedgers();
-        invoice.setOrders();
-        invoice.setPayment();
-        invoice.setUsers();
 
 
         Orders orders = new Orders();
@@ -101,7 +79,7 @@ public class PreLoadController {
         orders.setOrderQuantity();
         orders.setOrderStatus();
 
-        userRepository.save(users);
+        userRepository.save(users);*/
 
 
         return "succcess";

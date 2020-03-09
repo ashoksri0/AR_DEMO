@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.p3.poc.demo.ar.ledger.enums.TransactionMode.AMOUNT_RECEIVABLE;
 import static com.p3.poc.demo.ar.ledger.enums.TransactionMode.AMOUNT_RECEIVED;
@@ -30,6 +32,9 @@ public class ARService {
                                                   false, defaultValue = "1970-01-01") final Date startDate, @RequestParam(required = false, defaultValue = "2050-01-01") final Date endDate) {
 
         List<Ledger> ledgerList;
+          List<DataSetBean> amount_received_list =new ArrayList();
+          List<DataSetBean> amount_receivable_list = new ArrayList();;
+
         if (invoiceID == null) {
             ledgerList =
                     ledgerRepository.findAllByUsers_IdAndTranscationDateBetweenOrderByTranscationDateDesc(userID, startDate, endDate);
@@ -44,10 +49,12 @@ public class ARService {
             TransactionMode transactionMode = ledger.getTransactionMode();
             switch (transactionMode) {
                 case AMOUNT_RECEIVED:
+                    amount_received_list.add(DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
                     ledgerModel.setPaymentMode(AMOUNT_RECEIVED.toString());
                     arSummary.setTotalReceived(ledger.getTranscation() + arSummary.getTotalReceived());
                     break;
                 case AMOUNT_RECEIVABLE:
+                    amount_receivable_list.add(DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
                     ledgerModel.setPaymentMode(AMOUNT_RECEIVABLE.toString());
                     arSummary.setTotalReceivable(ledger.getTranscation() + arSummary.getTotalReceivable());
                     break;
@@ -63,41 +70,13 @@ public class ARService {
             arSummary.setTotalReceivable(arSummary.getTotalReceivable() + openingBalance);
         }
         arSummary.setTotalDue(arSummary.getTotalReceivable() - arSummary.getTotalReceived());
-        return AR360Model.builder().ledgerModelList(ledgerModelList).arSummary(arSummary).build();
+        return AR360Model.builder()
+                .ledgerModelList(ledgerModelList)
+                .amount_receivable_list(amount_receivable_list)
+                .amount_received_list(amount_received_list)
+                .arSummary(arSummary)
+                .build();
     }
 
-    public ARSummary getArSummaryForChart(@RequestParam final Long userID, @RequestParam(required = false) final Long invoiceID,
-                                        @RequestParam(required =
-            false, defaultValue = "1970-01-01") final Date startDate, @RequestParam(required = false, defaultValue = "2050-01-01") final Date endDate) {
-        List<Ledger> ledgerList;
-        if (invoiceID == null) {
-            ledgerList =
-                    ledgerRepository.findAllByUsers_IdAndTranscationDateBetweenOrderByTranscationDateDesc(userID, startDate, endDate);
-        } else {
-            ledgerList = ledgerRepository.findAllByUsers_IdAndInvoice_IdAndTranscationDateBetweenOrderByTranscationDateDesc(userID, invoiceID,
-                    startDate, endDate);
-        }
-        ARSummary arSummary = ARSummary.builder().openingBalance(0D).totalDue(0D).totalReceivable(0D).totalReceived(0D).build();
-        ledgerList.forEach(ledger -> {
-            TransactionMode transactionMode = ledger.getTransactionMode();
-            switch (transactionMode) {
-                case AMOUNT_RECEIVED:
-                    arSummary.setTotalReceived(ledger.getTranscation() + arSummary.getTotalReceived());
-                    break;
-                case AMOUNT_RECEIVABLE:
-                    arSummary.setTotalReceivable(ledger.getTranscation() + arSummary.getTotalReceivable());
-                    break;
-            }
-        });
-
-        if (ledgerList.size() > 0) {
-            Double openingBalance = invoiceID == null ? ledgerList.get(ledgerList.size() - 1).getUserOpeningBalance() :
-                    ledgerList.get(ledgerList.size() - 1).getInvoiceOpeningBalance();
-            arSummary.setOpeningBalance(openingBalance);
-            arSummary.setTotalReceivable(arSummary.getTotalReceivable() + openingBalance);
-        }
-        arSummary.setTotalDue(arSummary.getTotalReceivable() - arSummary.getTotalReceived());
-        return arSummary;
-    }
 
 }

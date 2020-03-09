@@ -4,13 +4,15 @@ server:
     context-path: /ar_demo/
 spring:
   profiles:
-    active: mysql
+    active: postgres
 
 ---
 spring:
   profiles: postgres
   application:
     name: ar_demo
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   jpa:
     properties:
       hibernate:
