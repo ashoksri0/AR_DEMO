@@ -25,11 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -42,6 +38,9 @@ import java.util.concurrent.atomic.AtomicReference;
 public class PreLoadController {
 
     @Autowired
+    PreLoadService preLoadService;
+    PaymentMode[] paymentModes = PaymentMode.values();
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private OrdersRepository ordersRepository;
@@ -51,9 +50,6 @@ public class PreLoadController {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-    @Autowired
-    PreLoadService preLoadService;
-    PaymentMode[] paymentModes = PaymentMode.values();
 
     @PostMapping(path = "/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveUsers(@RequestBody ConfigSetting configSetting) throws Exception {
@@ -88,21 +84,22 @@ public class PreLoadController {
 
             List<Invoice> invoiceList = invoiceRepository.findAll();
             final Users finalUsers = users;
-            invoiceList.forEach(invoice -> {
+            invoiceList.stream().forEachOrdered(invoice -> {
                 Double invoiceTotalAmount = invoice.getInvoiceTotal();
                 Double summingAmount = 0D;
                 while (summingAmount <= invoiceTotalAmount) {
-                    double amount = DateUtils.getRandomINrange(invoiceTotalAmount/8, invoiceTotalAmount/4);
-                    if (amount+summingAmount>=invoiceTotalAmount) {
+                    double amount = DateUtils.getRandomINrange(invoiceTotalAmount / 8, invoiceTotalAmount / 4);
+                    summingAmount += amount;
+                    if (summingAmount >= invoiceTotalAmount) {
                         break;
                     }
                     Payment payment = new Payment();
-                    summingAmount += amount;
                     payment.setAmount(amount);
                     payment.setPaymentMode(paymentModes[DateUtils.createRandomIntBetween(0, paymentModes.length - 1)]);
                     payment.setPaymentReceivedDate(DateUtils.createRandomDate(invoice.getInvoiceDate().getYear() + 1901, 2019));
                     payment.setInvoice(invoice);
                     payment = paymentRepository.save(payment);
+
                     Ledger ledger = new Ledger();
                     ledger.setInvoice(invoice);
                     ledger.setPayment(payment);
@@ -113,16 +110,15 @@ public class PreLoadController {
                     ledgerRepository.save(ledger);
                 }
             });
-            Map<Long,Double> invoiceMap=new TreeMap();
-             Double userBalance = 0D;
+            Map<Long, Double> invoiceMap = new TreeMap();
+            Double userBalance = 0D;
             List<Ledger> ledgerList = ledgerRepository.findAllByUsers_IdOrderByTranscationDate(users.getId());
 
             for (final Ledger ledger : ledgerList) {
-                double invoiceBalance=0D;
+                double invoiceBalance = 0D;
                 Invoice invoice = ledger.getInvoice();
-                if(invoiceMap.containsKey(invoice.getId()))
-                {
-                    invoiceBalance=invoiceMap.get(invoice.getId());
+                if (invoiceMap.containsKey(invoice.getId())) {
+                    invoiceBalance = invoiceMap.get(invoice.getId());
                 }
                 ledger.setInvoiceOpeningBalance(invoiceBalance);
                 ledger.setUserOpeningBalance(userBalance);
@@ -138,7 +134,7 @@ public class PreLoadController {
                 }
                 ledger.setUserBalance(userBalance);
                 ledger.setInvoiceBalance(invoiceBalance);
-                invoiceMap.put(invoice.getId(),invoiceBalance);
+                invoiceMap.put(invoice.getId(), invoiceBalance);
                 ledgerRepository.save(ledger);
             }
         }

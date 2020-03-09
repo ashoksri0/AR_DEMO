@@ -4,7 +4,7 @@ server:
     context-path: /ar_demo/
 spring:
   profiles:
-    active: postgres
+    active: mysql
 
 ---
 spring:
@@ -48,7 +48,7 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   datasource:
     url: jdbc:mysql://localhost:3306/ar_demo?createDatabaseIfNotExist=true
     #username: postgresuser
