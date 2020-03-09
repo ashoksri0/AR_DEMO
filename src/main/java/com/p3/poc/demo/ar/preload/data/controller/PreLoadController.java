@@ -1,7 +1,5 @@
 package com.p3.poc.demo.ar.preload.data.controller;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.p3.poc.demo.ar.DateUtils;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.invoice.repository.InvoiceRepository;
@@ -31,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -93,30 +92,55 @@ public class PreLoadController {
                 Double invoiceTotalAmount = invoice.getInvoiceTotal();
                 Double summingAmount = 0D;
                 while (summingAmount <= invoiceTotalAmount) {
-                    double amount = DateUtils.getRandomINrange(summingAmount, invoiceTotalAmount);
+                    double amount = DateUtils.getRandomINrange(invoiceTotalAmount/8, invoiceTotalAmount/4);
+                    if (amount+summingAmount>=invoiceTotalAmount) {
+                        break;
+                    }
                     Payment payment = new Payment();
                     summingAmount += amount;
                     payment.setAmount(amount);
-                    payment.setPaymentMode(paymentModes[DateUtils.createRandomIntBetween(0, paymentModes.length-1)]);
+                    payment.setPaymentMode(paymentModes[DateUtils.createRandomIntBetween(0, paymentModes.length - 1)]);
                     payment.setPaymentReceivedDate(DateUtils.createRandomDate(invoice.getInvoiceDate().getYear() + 1901, 2019));
                     payment.setInvoice(invoice);
-                    payment=paymentRepository.save(payment);
-                    Ledger ledger=new Ledger();
+                    payment = paymentRepository.save(payment);
+                    Ledger ledger = new Ledger();
                     ledger.setInvoice(invoice);
                     ledger.setPayment(payment);
                     ledger.setTransactionMode(TransactionMode.AMOUNT_RECEIVED);
                     ledger.setTranscation(payment.getAmount());
                     ledger.setUsers(finalUsers);
+                    ledger.setTranscationDate(payment.getPaymentReceivedDate());
                     ledgerRepository.save(ledger);
                 }
             });
-            Table<String,String,Double> table= HashBasedTable.create();
-            List<Ledger> ledgerList = ledgerRepository.findAllByUsers_IdAndOrderByTranscationDateDesc(users.getId());
-            ledgerList.forEach(ledger ->
-            {
+            Map<Long,Double> invoiceMap=new TreeMap();
+             Double userBalance = 0D;
+            List<Ledger> ledgerList = ledgerRepository.findAllByUsers_IdOrderByTranscationDate(users.getId());
+
+            for (final Ledger ledger : ledgerList) {
+                double invoiceBalance=0D;
                 Invoice invoice = ledger.getInvoice();
-                Payment payment = ledger.getPayment();
-            });
+                if(invoiceMap.containsKey(invoice.getId()))
+                {
+                    invoiceBalance=invoiceMap.get(invoice.getId());
+                }
+                ledger.setInvoiceOpeningBalance(invoiceBalance);
+                ledger.setUserOpeningBalance(userBalance);
+                switch (ledger.getTransactionMode()) {
+                    case AMOUNT_RECEIVED:
+                        userBalance -= ledger.getTranscation();
+                        invoiceBalance -= ledger.getTranscation();
+                        break;
+                    case AMOUNT_RECEIVABLE:
+                        userBalance += ledger.getTranscation();
+                        invoiceBalance += ledger.getTranscation();
+                        break;
+                }
+                ledger.setUserBalance(userBalance);
+                ledger.setInvoiceBalance(invoiceBalance);
+                invoiceMap.put(invoice.getId(),invoiceBalance);
+                ledgerRepository.save(ledger);
+            }
         }
     }
 
@@ -145,64 +169,14 @@ public class PreLoadController {
             });
             invoice2.setInvoiceTotal(sumPrice.get());
             invoiceRepository.save(invoice2);
-            Ledger ledger=new Ledger();
+            Ledger ledger = new Ledger();
             ledger.setInvoice(invoice2);
             ledger.setTransactionMode(TransactionMode.AMOUNT_RECEIVABLE);
             ledger.setTranscation(invoice2.getInvoiceTotal());
+            ledger.setTranscationDate(invoice2.getInvoiceDate());
             ledger.setUsers(users);
             ledgerRepository.save(ledger);
         }
     }
-
-
-
-/*
-
-        Invoice invoice = new Invoice();
-        invoice.setUsers(users);
-        invoice.setInvoiceDate(new Date(DateUtils.createRandomDate(1, 6).toEpochDay()));
-        invoice.setInvoiceTotal(DateUtils.getRandomINrange(100000, 3000000));
-        invoice = invoiceRepository.save(invoice);
-*/
-
-/*
-     // Ledger Create Code
-
-        Ledger ledger =new Ledger();
-        ledger.setInvoice();
-        ledger.setInvoiceBalance(5000d);
-        ledger.setTransactionMode(TransactionMode.AMOUNT_RECEIVED);
-        ledger.setInvoiceOpeningBalance();
-        ledger.setUserOpeningBalance();
-        //ledger.setPayment(12000d);
-        ledger.setTranscation(2000d);
-        ledger.setUserBalance(1000d);
-        ledger.setUsers(users);
-        ledger.setTranscationDate(new Date());
-
-
-        // Payment  Create Code
-
-        Payment payment = new Payment();
-        payment.setAmount(15000d);
-        payment.setPaymentMode(PaymentMode.CHEQUE);
-        payment.setPaymentReceivedDate(new Date());
-        payment.setInvoice(invoice);
-        payment.setLedger();
-        payment.setPaymentCreatedDate();
-
-
-
-
-        Orders orders = new Orders();
-        orders.setInvoice();
-        orders.setOrderDate();
-        orders.setOrderName();
-        orders.setOrderPrice();
-        orders.setOrderQuantity();
-        orders.setOrderStatus();
-
-        userRepository.save(users);*/
-
 
 }

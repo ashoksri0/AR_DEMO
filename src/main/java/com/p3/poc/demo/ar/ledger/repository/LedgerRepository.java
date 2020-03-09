@@ -2,6 +2,7 @@ package com.p3.poc.demo.ar.ledger.repository;
 
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -17,5 +18,5 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long> {
     List<Ledger> findAllByUsers_IdAndTranscationDateBetweenOrderByTranscationDateDesc(Long userId, Date startDate, Date endDate);
     List<Ledger> findAllByUsers_IdAndInvoice_IdAndTranscationDateBetweenOrderByTranscationDateDesc(Long userId,Long invoiceId, Date startDate,
                                                                                                    Date endDate);
-    List<Ledger> findAllByUsers_IdAndOrderByTranscationDateDesc(Long userID);
+    List<Ledger> findAllByUsers_IdOrderByTranscationDate(Long userID);
 }

@@ -70,6 +70,9 @@ public class ARService {
             arSummary.setTotalReceivable(arSummary.getTotalReceivable() + openingBalance);
         }
         arSummary.setTotalDue(arSummary.getTotalReceivable() - arSummary.getTotalReceived());
+        if (amount_receivable_list.size()==0) {
+            amount_receivable_list.add(DataSetBean.builder().x(startDate).y(arSummary.getOpeningBalance()).build());
+        }
         return AR360Model.builder()
                 .ledgerModelList(ledgerModelList)
                 .amount_receivable_list(amount_receivable_list)
