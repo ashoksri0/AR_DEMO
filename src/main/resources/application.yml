@@ -1,16 +1,16 @@
 server:
   port: 8081
   servlet:
-    context-path: /patient360/
+    context-path: /ar_demo/
 spring:
   profiles:
-    active: postgres
+    active: mysql
 
 ---
 spring:
   profiles: postgres
   application:
-    name: patient-360
+    name: ar_demo
   jpa:
     properties:
       hibernate:
@@ -36,18 +36,19 @@ spring:
 spring:
   profiles: mysql
   application:
-    name: patient-360
+    name: ar_demo
   jpa:
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
         provider_disables_autocommit: false
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
     show-sql: true
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://localhost:3306/ar_demo
+    url: jdbc:mysql://localhost:3306/ar_demo?createDatabaseIfNotExist=true
     #username: postgresuser
     username: root
     password: imaninshu1@
@@ -55,7 +56,6 @@ spring:
       connection-timeout: 20000
       maximumPoolSize: 10
     max-wait: 10000
-
 logging:
   level.root: error
 springdoc:
