@@ -30,20 +30,4 @@ public class PreLoadService {
         Users users=new Users();
     }
 
-    @Transactional
-    public void truncate() throws Exception {
-        List<String> tableNames = new ArrayList<>();
-        Session session = entityManager.unwrap(Session.class);
-        Map<String, ClassMetadata> hibernateMetadata = session.getSessionFactory().getAllClassMetadata();
-
-        for (ClassMetadata classMetadata : hibernateMetadata.values()) {
-            AbstractEntityPersister aep = (AbstractEntityPersister) classMetadata;
-            tableNames.add(aep.getTableName());
-        }
-
-        entityManager.flush();
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
-        tableNames.forEach(tableName -> entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate());
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
-    }
 }
