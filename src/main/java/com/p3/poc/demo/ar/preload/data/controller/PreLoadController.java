@@ -11,6 +11,7 @@ import org.ajbrown.namemachine.Name;
 import org.ajbrown.namemachine.NameGenerator;
 import org.ajbrown.namemachine.NameGeneratorOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +37,7 @@ public class PreLoadController {
     @Autowired
     PreLoadService preLoadService;
 
-    @PostMapping(path = "/generate")
+    @PostMapping(path = "/generate",consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveUsers(@RequestBody ConfigSetting configSetting) throws Exception {
         NameGeneratorOptions options = new NameGeneratorOptions();
 
@@ -53,7 +54,18 @@ public class PreLoadController {
             users.setEmail(name.getFirstName()+"@gmail.com");
             users.setLastName(name.getLastName());
             users = userRepository.save(users);
+
+            for (Integer invoiceINdex = 0; invoiceINdex < configSetting.getInvoiceCount(); invoiceINdex++) {
+                Invoice invoice = new Invoice();
+                invoice.setUsers(users);
+                invoice.setInvoiceDate(new Date(DateUtils.createRandomDate(1, 6).toEpochDay()));
+                invoice.setInvoiceTotal(DateUtils.getRandomINrange(100000, 3000000));
+                invoiceRepository.save(invoice);
+            }
+
         }
+
+
 
 /*
 
