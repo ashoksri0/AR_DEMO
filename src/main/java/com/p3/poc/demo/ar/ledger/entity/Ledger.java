@@ -26,7 +26,7 @@ public class Ledger {
     private Long id;
 
     private Double transcation;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date transcationDate;
     private Double invoiceBalance;
     private Double userBalance;

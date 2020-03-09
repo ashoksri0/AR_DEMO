@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 public class InvoiceDetailsController {
     @Autowired
     InvoiceRepository invoiceRepository;
-    @Autowired
-    OrdersRepository ordersRepository;
+
     @Autowired
     OrdersService ordersService;
     @Autowired
@@ -53,19 +52,6 @@ public class InvoiceDetailsController {
 
 
 
-    @GetMapping("/order/{invoiceId}")
-    public List<OrderModel> getOrderByInvoice(@PathVariable Long invoiceId) {
-        return ordersRepository.findAllByInvoice_Id(invoiceId).stream().map(getOrdersOrderModelFunction()).collect(Collectors.toList());
-    }
-
-    private Function<Orders, OrderModel> getOrdersOrderModelFunction() {
-        return orders -> {
-            return OrderModel.builder().orderDate(orders.getOrderDate())
-                    .orderName(orders.getOrderName())
-                    .orderPrice(orders.getOrderPrice())
-                    .orderQuantity(orders.getOrderQuantity()).build();
-        };
-    }
 
 
 }

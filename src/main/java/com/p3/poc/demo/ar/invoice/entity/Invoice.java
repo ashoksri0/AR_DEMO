@@ -16,7 +16,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date invoiceDate;
     private Double invoiceTotal;
     @JsonIgnore

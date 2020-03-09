@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.p3.poc.demo.ar.invoice.entity.Invoice;
 import com.p3.poc.demo.ar.ledger.entity.Ledger;
 import com.p3.poc.demo.ar.payment.enums.PaymentMode;
-import com.p3.poc.demo.ar.user.entity.Users;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,16 +25,14 @@ public class Payment {
     private Long id;
     private PaymentMode paymentMode;
     private Double amount;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date paymentReceivedDate;
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
     @OneToOne(mappedBy = "payment")
     private Ledger ledger;
-    @Temporal(TemporalType.DATE)
-    private Date paymentCreatedDate;
 
 
     public Payment() {
@@ -73,14 +70,6 @@ public class Payment {
 
     public void setAmount(final Double amount) {
         this.amount = amount;
-    }
-
-    public Date getPaymentCreatedDate() {
-        return paymentCreatedDate;
-    }
-
-    public void setPaymentCreatedDate(final Date paymentCreatedDate) {
-        this.paymentCreatedDate = paymentCreatedDate;
     }
 
     public Date getPaymentReceivedDate() {
