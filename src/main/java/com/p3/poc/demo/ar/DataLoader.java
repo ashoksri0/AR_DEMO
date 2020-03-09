@@ -1,5 +1,4 @@
-/*
-package com.p3.poc.demo.ar;
+/*package com.p3.poc.demo.ar;
 
 
 import com.p3.poc.demo.ar.user.entity.User;
@@ -23,6 +22,5 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
         repository.save(new User("User FN", "User LN", "user1@user.com", new Date("1968-01-01"), new Date("2020-01-01")));
     }
-}
+}*/
 
-*/
