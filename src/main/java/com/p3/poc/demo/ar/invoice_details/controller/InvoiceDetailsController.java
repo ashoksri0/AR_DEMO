@@ -39,7 +39,7 @@ public class InvoiceDetailsController {
     @Autowired
     InvoiceService invoiceService;
     @GetMapping
-    public List<InvoiceDetails> getUserInvoice(@RequestParam Long userID,
+    public List<InvoiceDetails>      getUserInvoice(@RequestParam Long userID,
                                                @RequestParam(required = false, defaultValue = "1970-01-01") Date startDate,
                                                @RequestParam(required = false, defaultValue = "2050-01-01") Date endDate,
                                                @RequestParam(required = false, defaultValue = "false") Boolean sort,
