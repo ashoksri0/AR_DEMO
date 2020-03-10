@@ -1,11 +1,11 @@
 package com.p3.poc.demo.ar.invoice.service;
 
+import com.p3.poc.demo.ar.invoice.entity.Invoice;
+import com.p3.poc.demo.ar.invoice.repository.InvoiceRepository;
 import com.p3.poc.demo.ar.invoice_details.model.InvoiceDetails;
 import com.p3.poc.demo.ar.order.entity.Orders;
 import com.p3.poc.demo.ar.payment.entity.Payment;
 import com.p3.poc.demo.ar.utils.exceptions.InvoiceNotFoundException;
-import com.p3.poc.demo.ar.invoice.entity.Invoice;
-import com.p3.poc.demo.ar.invoice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -73,16 +73,12 @@ public class InvoiceService {
             return invoiceDetails;
         }).collect(Collectors.toList());
     }
-    public void setAmountDetails(InvoiceDetails invoiceDetails, Invoice invoice) {
-        Double amountTotal = invoice.getOrders()
-                .stream()
-                .map(Orders::getOrderPrice)
-                .reduce(0D, Double::sum);
 
+    public void setAmountDetails(InvoiceDetails invoiceDetails, Invoice invoice) {
+        Double amountTotal = invoice.getInvoiceTotal();
         Double amountPaid = invoice.getPayment().stream().map(Payment::getAmount).reduce(0D, Double::sum);
         invoiceDetails.setAmountPaid(amountPaid);
         invoiceDetails.setAmountDue(amountTotal - amountPaid);
         invoiceDetails.setTotalCost(amountTotal);
-        System.out.println(invoiceDetails);
     }
 }
