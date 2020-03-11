@@ -18,6 +18,8 @@ import com.p3.poc.demo.ar.user.repository.UserRepository;
 import org.ajbrown.namemachine.Name;
 import org.ajbrown.namemachine.NameGenerator;
 import org.ajbrown.namemachine.NameGeneratorOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,19 +52,16 @@ public class PreLoadController {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     @PostMapping(path = "/generate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveUsers(@RequestBody ConfigSetting configSetting) throws Exception {
         NameGeneratorOptions options = new NameGeneratorOptions();
-
-//Get deterministic results by setting a random seed.
         options.setGenderWeight(50);
         NameGenerator generator = new NameGenerator(options);
         List<Name> nameList = generator.generateNames(configSetting.getUserCount());
         preLoadService.getOrder();
         List<String> productKeys = new ArrayList(preLoadService.getProductsMap().keySet());
         Map<String, Double> productsMap = preLoadService.getProductsMap();
-
         savingInvoices(configSetting, nameList, productKeys, productsMap);
         return "success";
     }
@@ -82,9 +81,10 @@ public class PreLoadController {
 
             savingOrders(productKeys, productsMap, users);
 
-            List<Invoice> invoiceList = invoiceRepository.findAll();
+            List<Invoice> invoiceList = invoiceRepository.findAllByUsers_Id(users.getId());
             final Users finalUsers = users;
             invoiceList.stream().forEachOrdered(invoice -> {
+                LOGGER.info(" Invoice ID {} total amount {}",invoice.getId(),invoice.getInvoiceTotal());
                 Double invoiceTotalAmount = invoice.getInvoiceTotal();
                 Double summingAmount = 0D;
                 while (summingAmount <= invoiceTotalAmount) {
@@ -99,7 +99,7 @@ public class PreLoadController {
                     payment.setPaymentReceivedDate(DateUtils.createRandomDate(invoice.getInvoiceDate().getYear() + 1901, 2019));
                     payment.setInvoice(invoice);
                     payment = paymentRepository.save(payment);
-
+                    LOGGER.info(" Invoice ID {} payment {}",invoice.getId(),payment);
                     Ledger ledger = new Ledger();
                     ledger.setInvoice(invoice);
                     ledger.setPayment(payment);
@@ -141,7 +141,8 @@ public class PreLoadController {
     }
 
     private void savingOrders(final List<String> productKeys, final Map<String, Double> productsMap, final Users users) {
-        for (Integer invoiceINdex = 0; invoiceINdex < DateUtils.getRandomINrange(10, 20); invoiceINdex++) {
+    //    for (Integer invoiceINdex = 0; invoiceINdex < DateUtils.getRandomINrange(10, 20); invoiceINdex++) {
+        for (Integer invoiceINdex = 0; invoiceINdex < 5; invoiceINdex++) {
             Invoice invoice = new Invoice();
             invoice.setUsers(users);
             invoice.setInvoiceDate(DateUtils.createRandomDate(2010, 2016));

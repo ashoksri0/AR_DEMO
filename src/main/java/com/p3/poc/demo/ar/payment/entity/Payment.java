@@ -33,6 +33,7 @@ public class Payment {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
+    @JsonIgnore
     @OneToOne(mappedBy = "payment")
     private Ledger ledger;
 
@@ -88,5 +89,15 @@ public class Payment {
 
     public void setInvoice(final Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id=" + id +
+                ", paymentMode=" + paymentMode +
+                ", amount=" + amount +
+                ", paymentReceivedDate=" + paymentReceivedDate +
+                '}';
     }
 }

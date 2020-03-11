@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+    List<Invoice> findAllByUsers_Id(Long id);
     List<Invoice> findAllByUsers_IdAndInvoiceDateBetweenOrderByInvoiceDate(Long id, Date startDate,Date endDate, Pageable pagable);
     List<Invoice> findAllByUsers_IdAndInvoiceDateBetweenOrderByInvoiceDateDesc(Long id, Date startDate,Date endDate, Pageable pagable);
 }

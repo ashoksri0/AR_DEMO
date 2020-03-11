@@ -4,7 +4,7 @@ server:
     context-path: /ar_demo/
 spring:
   profiles:
-    active: mysql
+    active: postgres
 
 ---
 spring:
@@ -59,7 +59,7 @@ spring:
       maximumPoolSize: 10
     max-wait: 10000
 logging:
-  level.root: error
+  level.root: info
 springdoc:
   api-docs:
     enabled: true
