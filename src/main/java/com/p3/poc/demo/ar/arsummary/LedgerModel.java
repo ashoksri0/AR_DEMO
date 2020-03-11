@@ -21,4 +21,5 @@ public class LedgerModel {
     private String paymentMode;
     private Double amount;
     private Double balanceReceivable;
+    private Long invoice;
 }

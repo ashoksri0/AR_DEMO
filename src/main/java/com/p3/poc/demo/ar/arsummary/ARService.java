@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.p3.poc.demo.ar.ledger.enums.TransactionMode.AMOUNT_RECEIVABLE;
 import static com.p3.poc.demo.ar.ledger.enums.TransactionMode.AMOUNT_RECEIVED;
@@ -31,9 +31,10 @@ public class ARService {
                                        @RequestParam(required =
                                                   false, defaultValue = "1970-01-01") final Date startDate, @RequestParam(required = false, defaultValue = "2050-01-01") final Date endDate) {
 
-        List<Ledger> ledgerList;
+          List<Ledger> ledgerList;
           List<DataSetBean> amount_received_list =new ArrayList();
-          List<DataSetBean> amount_receivable_list = new ArrayList();;
+          List<DataSetBean> amount_receivable_list = new ArrayList();
+
 
         if (invoiceID == null) {
             ledgerList =
@@ -45,16 +46,16 @@ public class ARService {
         List<LedgerModel> ledgerModelList=new ArrayList();
         ARSummary arSummary = ARSummary.builder().openingBalance(0D).totalDue(0D).totalReceivable(0D).totalReceived(0D).build();
         ledgerList.forEach(ledger -> {
-            LedgerModel ledgerModel=LedgerModel.builder().date(ledger.getTranscationDate()).build();
+            LedgerModel ledgerModel=LedgerModel.builder().date(ledger.getTranscationDate()).invoice(ledger.getInvoice().getId()).build();
             TransactionMode transactionMode = ledger.getTransactionMode();
             switch (transactionMode) {
                 case AMOUNT_RECEIVED:
-                    amount_received_list.add(DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
+                   amount_received_list.add(0,DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
                     ledgerModel.setPaymentMode(AMOUNT_RECEIVED.toString());
                     arSummary.setTotalReceived(ledger.getTranscation() + arSummary.getTotalReceived());
                     break;
                 case AMOUNT_RECEIVABLE:
-                    amount_receivable_list.add(DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
+                    amount_receivable_list.add(0,DataSetBean.builder().x(ledger.getTranscationDate()).y(ledger.getTranscation()).build());
                     ledgerModel.setPaymentMode(AMOUNT_RECEIVABLE.toString());
                     arSummary.setTotalReceivable(ledger.getTranscation() + arSummary.getTotalReceivable());
                     break;

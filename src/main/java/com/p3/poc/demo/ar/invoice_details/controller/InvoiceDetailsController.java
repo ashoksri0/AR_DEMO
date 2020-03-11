@@ -15,11 +15,7 @@ import com.p3.poc.demo.ar.order.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -28,6 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/invoice-details")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class InvoiceDetailsController {
     @Autowired
     InvoiceRepository invoiceRepository;

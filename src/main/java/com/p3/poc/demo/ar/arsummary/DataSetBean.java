@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DataSetBean {
+public class DataSetBean  {
     private Date x;
     private Double y;
 }
