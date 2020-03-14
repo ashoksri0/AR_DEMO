@@ -99,8 +99,8 @@ public class ARService {
 
         // uncomment below if you want dataset at same period for both amount_receivable_list and amount_received_list
         //dataPointsAdapter(amount_receivable_list, amount_received_list);
-        System.out.println(amount_receivable_list);
-        System.out.println(amount_received_list);
+        //System.out.println(amount_receivable_list);
+        //System.out.println(amount_received_list);
 
         return AR360Model.builder()
                 .ledgerModelList(ledgerModelList)
